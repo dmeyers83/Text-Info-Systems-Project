@@ -1,6 +1,6 @@
 # Text-Info-Systems-Project
  
-Indeed webscraper that returns summary, keywords, and topics based on job search query.
+Indeed webscraper that returns matching summary, keywords, and topics for a user-provided job search query.
 
 ## Team Members
 
