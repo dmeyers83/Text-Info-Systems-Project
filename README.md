@@ -10,18 +10,18 @@ Indeed webscraper that returns matching summary, keywords, and topics for a user
 
 ## Dependencies
 
-### Webscraping packages
+Webscraping packages
 - [beautiful soup](https://www.crummy.com/software/BeautifulSoup/)
 - [selenium](https://selenium-python.readthedocs.io/installation.html)
 - [chromedriver](https://chromedriver.chromium.org/)
 
-### Text mining packages
-- [nltk](https://www.nltk.org/install.html)
-- [gensim](https://radimrehurek.com/gensim/)
+Text mining packages
+- [nltk](https://www.nltk.org/install.html) - package used for natural language processing and document processing
+- [gensim](https://radimrehurek.com/gensim/) - package used for topic modeling
 
-### Visualization packages
+Visualization packages
 - [pprint](https://docs.python.org/3/library/pprint.html)
-- [pLDAvis](https://pyldavis.readthedocs.io/en/latest/readme.html#installation)
+- [pLDAvis](https://pyldavis.readthedocs.io/en/latest/readme.html#installation) - package that enables interactive plot visualization of LDA topic model
 
 
 
