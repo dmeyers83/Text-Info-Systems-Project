@@ -2,13 +2,13 @@
  
 Indeed webscraper that returns summary, keywords, and topics based on job search query.
 
-# Team Members
+## Team Members
 
 - Doug Meyers
 - James Robertson
 - Brian Yoo
 
-# Dependencies
+## Dependencies
 
 - beautiful soup
 - selenium
@@ -18,11 +18,11 @@ Indeed webscraper that returns summary, keywords, and topics based on job search
 - pprint
 - chromedriver
 
-# Installation
+## Installation
 
 To be continued..
 
-# Usage
+## Usage
 
 To be continued..
 
