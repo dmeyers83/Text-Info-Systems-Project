@@ -37,6 +37,7 @@ def mergeListsandWrite(top50BIjobs,top100USjobs):
     phandle = open("topjobs.bin","wb")
     pickle.dump(data, phandle)
     phandle.close()
+    print(data)
 
 def get_js_soup(url,browser):
     browser.get(url)
@@ -54,7 +55,7 @@ def get_annoyingUSN(url,browser):
         elem.send_keys(Keys.PAGE_DOWN)
         time.sleep(0.2)
         no_of_pagedowns-=1
-        
+
     res_html = browser.execute_script('return document.body.innerHTML')
     soup = BeautifulSoup(res_html,'html.parser')
     return soup

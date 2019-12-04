@@ -8,6 +8,7 @@ import pickle
 import re
 import urllib
 import nltk
+import math
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem.wordnet import WordNetLemmatizer
 from nltk.corpus import stopwords
@@ -32,6 +33,8 @@ import seaborn as sns
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+import datetime
+import pickle
 
 class ReverseResume():
     def __init__(self):
@@ -39,6 +42,14 @@ class ReverseResume():
         self.importPackages()
         self.platform=sys.platform
         self.browser=self.getBrowser(self.platform)
+        self.verbose=False
+        self.summary=None
+        self.keywords=None
+        self.alldocs=None
+        self.lda=None
+        self.pca=None
+        self.visualize=False
+        self.today=datetime.date.today()
 
 
     def __del__(self):
@@ -56,6 +67,7 @@ class ReverseResume():
             import re
             import urllib
             import nltk
+            import math
             from nltk.tokenize import RegexpTokenizer
             from nltk.stem.wordnet import WordNetLemmatizer
             from nltk.corpus import stopwords
@@ -80,7 +92,8 @@ class ReverseResume():
             import numpy as np
             import matplotlib.pyplot as plt
             import sys
-
+            import datetime
+            import pickle
         except ImportError as e:
             print(e)
 
@@ -121,22 +134,34 @@ class ReverseResume():
                 f.write(l)
                 f.write('\n')
 
+    def summary(self):
+        print(self.summary)
+        #print(self.lda)
+
+    def cache(self, query='', location='New York, NY'):
+        fhandle = open("./lastsearched.bin","rb")
+        lastsearched=pickle.load(fhandle)
+        fhandle.close()
+    
+
 
     def scrape_search_result_page(self,dir_url,page_result,browser):
-        print ('-'*20,'Scraping indeed search result page '+ str(page_result)+'','-'*20)
+        if self.verbose==True:
+            print ('-'*20,'Scraping indeed search result page '+ str(page_result)+'','-'*20)
         indeed_links = []
         soup = self.get_js_soup(dir_url,self.browser)
         for link_holder in soup.find_all('div',class_='title'): #get list of all <div> of class 'photo nocaption'
             rel_link = link_holder.find('a')['href'] #get url
             if rel_link != '':
                 indeed_links.append('https://www.indeed.com' + rel_link)
-        print ('-'*20,'Found {} indeed search urls'.format(len(indeed_links)),'-'*20)
+        if self.verbose==True:
+            print ('-'*20,'Found {} indeed search urls'.format(len(indeed_links)),'-'*20)
         return indeed_links
 
-    def run(self,query, location):
-
-        q = 'Python Developer'
-        l = 'New+York+State' #location of job
+    def run(self, query='', location='New York, NY'):
+        "Searching for job postings."
+        q = query #ideal job
+        l = location #location of job
         numPage = 20 #num pages to scrap links from
         allLinks = [] # list to capture
         start = 0 #pagnigation variable, page 1 = 0, page 2 = 10, page 3 = 30, etc
@@ -145,48 +170,34 @@ class ReverseResume():
         for page_result in range(numPage):
             start = page_result* 10 #increment the variable used to denote the next page
             search_result_url = 'https://www.indeed.com/jobs?q='+ q +'&l='+ l +'&start='+str(start) #build query string
-            print(search_result_url)
+            if self.verbose==True:
+                print(search_result_url)
             jobSearchResult = self.scrape_search_result_page(search_result_url,page_result, self.browser) # call scraper function
             allLinks.extend(jobSearchResult) #add to link
-
-
-
-        # ### write to file for debugging
-
-        # In[4]:
-
-
         #Remove Duplicates
-        print(len(allLinks))
+        if self.verbose==True:
+            print(len(allLinks))
         allLinks = list(set(allLinks))
-        print (len(allLinks))
+        if self.verbose==True:
+            print (len(allLinks))
 
 
-        # In[5]:
-
-
-        print(allLinks)
-        job_urls_file = 'jobSearchResult' +q+'.txt'
+        #print(allLinks)
+        job_urls_file = 'jobSearchResult-' +q+'.txt'
         # write to file
         self.write_lst(allLinks,job_urls_file)
-
-
-        # ## Scrape page data for each link
-
-        # In[6]:
-
-
-
-
-
-        # In[7]:
-
-
         homepage_found = False
         page_data = ''
         page_data_list = []
+        print("Scraping " +str(len(allLinks)) + " job links.")
+        incrementOp=math.ceil(len(allLinks)/10)
+        counter=incrementOp
         for link_num, indeed_url in enumerate(allLinks):
-            print("Accessing link",link_num+1,"of",len(allLinks))
+            #print("Accessing link",link_num+1,"of",len(allLinks))
+            if counter<1:
+                print("*", end='')
+                counter=incrementOp
+            counter-=1
             try:
                 page_soup = self.remove_script(self.get_js_soup(indeed_url,self.browser))
 
@@ -204,64 +215,31 @@ class ReverseResume():
             page_data = page_data[:trimStringBy] #drop footer
             page_data = remove_stopwords(page_data)
             page_data_list.append(page_data)
-
-
-
-        # ## Print page data and write to file for debug
-
-        # **Footer still has some text at the end which isn't properly cleaned
-
-        # In[8]:
-
-
-        print(page_data_list[1])
+        print("*-> Scrape Complete.")
+        print("Summarizing Findings.")
+        if self.verbose==True:
+            print(page_data_list[1])
         document_set = page_data_list
         page_data_file = 'pageText' +q+'.txt'
         self.write_lst(page_data_list,page_data_file)
 
-
-
         # Create single document by concatenating all documents
         all_documents = ""
-
         for doc in page_data_list:
             all_documents += doc
 
+        self.alldocs=all_documents
 
-        # In[11]:
-
-
-        #keywords
+        #Creating keywords
         keywords(all_documents).split('\n')
-
-
-        # In[12]:
-
-
-        print(summarize(all_documents, word_count  = 250))
-
-
-        # In[13]:
-
-
-        print(mz_keywords(all_documents,scores=True,threshold=0.001))
-
+        self.summary=summarize(all_documents, word_count  = 250)
+        self.keywords=mz_keywords(all_documents,scores=True,threshold=0.001)
+        if self.verbose==True:
+            print (self.summary)
+            print (self.keywords)
 
         # # Topic Modeling
-
-        # ### import libraries
-
-        # In[14]:
-
-
-
-
-
         # ### tokenize the documents
-
-        # In[15]:
-
-
         docs = page_data_list
 
         # Split the documents into tokens.
@@ -278,27 +256,14 @@ class ReverseResume():
 
 
         # must download wordnet!!!
-
-        # In[16]:
-
-
         # nltk.download('wordnet')
 
-
         # ### lemmatize the documents
-
-        # In[17]:
-
-
         lemmatizer = WordNetLemmatizer()
         docs = [[lemmatizer.lemmatize(token) for token in doc] for doc in docs]
 
 
         # ### compute bigrams
-
-        # In[18]:
-
-
         # Add bigrams and trigrams to docs (only ones that appear 20 times or more).
         bigram = Phrases(docs, min_count=10)
         for idx in range(len(docs)):
@@ -309,36 +274,17 @@ class ReverseResume():
 
 
         # ### remove rare and common tokens
-
-        # In[19]:
-
-
         # Create a dictionary representation of the documents.
         dictionary = Dictionary(docs)
-
         # Filter out words that occur less than 20 documents, or more than 50% of the documents.
         dictionary.filter_extremes(no_below=20, no_above=0.75)
-
-
-        # In[20]:
-
-
         # Bag-of-words representation of the documents.
         corpus = [dictionary.doc2bow(doc) for doc in docs]
-
-
-        # In[21]:
-
-
-        print('Number of unique tokens: %d' % len(dictionary))
-        print('Number of documents: %d' % len(corpus))
-
+        if self.verbose==True:
+            print('Number of unique tokens: %d' % len(dictionary))
+            print('Number of documents: %d' % len(corpus))
 
         # ## Build LDA Model
-
-        # In[22]:
-
-
         # Set training parameters.
         num_topics = 20
         chunksize = 2000
@@ -362,32 +308,19 @@ class ReverseResume():
             eval_every=eval_every
         )
 
-
-        # In[23]:
-
-
         num_top_words = 10
         top_topics = lda_model.top_topics(corpus, topn=num_top_words) #, num_words=10)
         # print(top_topics)
         # Average topic coherence is the sum of topic coherences of all topics, divided by the number of topics.
         avg_topic_coherence = sum([t[1] for t in top_topics]) / num_topics
-        print('Average topic coherence: %.4f.' % avg_topic_coherence)
+        if self.verbose==True:
+            print('Average topic coherence: %.4f.' % avg_topic_coherence)
 
-        for idx, topic in lda_model.print_topics(-1):
-            print('Topic: {} \nWords: {}'.format(idx, topic))
+            for idx, topic in lda_model.print_topics(-1):
+                print('Topic: {} \nWords: {}'.format(idx, topic))
 
-
+        self.lda=lda_model
         # ## Visualize Topics
-
-        # In[266]:
-
-
-
-
-
-        # In[339]:
-
-
         #visualize without sorting topics
 
         # initialize
@@ -412,6 +345,8 @@ class ReverseResume():
         df['p_total'] = df.groupby(['word'])['p_word_topic'].transform('sum')
         # print(df)
         # sorted by top topics
+
+
         for n in df.topic_number_idx.unique():
             df_sparse = df[df['topic_number_idx']==n]
             df.drop_duplicates(subset=['word', 'p_word_topic'])
@@ -427,13 +362,11 @@ class ReverseResume():
             plt.legend(bbox_to_anchor=[1.25, 1.0])
 
             plt.xlabel('likelihood')
-        plt.show()
+        if self.visualize==True:
+            plt.show()
 
 
         # ### use coherence to sort dataframes (deprecated since the topic numbers get re-indexed)
-
-        # In[268]:
-
 
         def create_df_from_top_topics(top_topics):
             ''' function that coverts lda_model.top_topics() data into pandas dataframe
@@ -464,12 +397,9 @@ class ReverseResume():
 
             return pd.DataFrame(dict)
 
+
+
         df = create_df_from_top_topics(top_topics)
-
-
-        # In[288]:
-
-
         # # sorted by top topics (coherence measure)
         # for n in df.topic_number_idx.unique():
         #     df_sparse = df[df['topic_number_idx']==n]
@@ -481,25 +411,17 @@ class ReverseResume():
         # #     plt.xlim([0, max(df.p_word_topic)])
         # plt.show()
 
-
-
         # ### PCA
-
         # https://www.machinelearningplus.com/nlp/topic-modeling-visualization-how-to-present-results-lda-models/
 
         # plot topics based on principle components
 
-        # In[296]:
-
-
-
-
-
+        # In[296]
         # PCA by topic weight
         # shape = num_docs * number_topics
         topic_weights = []
-
-        print(lda_model[corpus])
+        if self.verbose==True:
+            print(lda_model[corpus])
         for i, row_list in enumerate(lda_model[corpus]):
             # row list contains list of topic number and probability of topic as a tuple
             # note that each doc can have multiple topics
@@ -524,12 +446,15 @@ class ReverseResume():
         pca = PCA(n_components=2)
         result = pca.fit_transform(X)
 
+        self.pca=result
+
         # Dominant topic number in each doc
         topic_num = np.argmax(X, axis=1)
 
         plt.figure(figsize=(8,8))
 
-        print('number of documents:',len(lda_model[corpus]))
+        if self.verbose==True:
+            print('number of documents:',len(lda_model[corpus]))
         labels=['topic_'+"%02d" %(x) for x in range(num_topics+1)]
 
         # df_topic_weight = pd.DataFrame({'x':result[:,0],'y':result[:,1]})
@@ -541,19 +466,12 @@ class ReverseResume():
         plt.xlabel('PC1')
         plt.ylabel('PC2')
         plt.legend( bbox_to_anchor=[1.2, 1.0])
-
-        plt.show()
+        if self.visualize==True:
+            plt.show()
 
 
         # plot topics based on T-SNE
-
-        # In[297]:
-
-
-
-
         # TSNE by topic weight
-
         # Dominant topic number in each doc
         topic_num = np.argmax(X, axis=1)
 
@@ -562,21 +480,18 @@ class ReverseResume():
         tsne_lda = tsne_model.fit_transform(X)
 
         # Plot the Topic Clusters
-        print('number of documents:',len(tsne_lda))
+        if self.verbose==True:
+            print('number of documents:',len(tsne_lda))
         plt.figure(figsize=(8,8))
         df_topic_weight = pd.DataFrame({'x':tsne_lda[:,0],'y':tsne_lda[:,1],'label':[labels[x] for x in topic_num]}).sort_values(by='label')
         sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, hue=df_topic_weight.label, data =df_topic_weight)
         plt.legend( bbox_to_anchor=[1.2, 1.0])
         plt.xlabel('')
         plt.ylabel('')
-        plt.show()
-
-
-        # In[107]:
-
+        if self.visualize==True:
+            plt.show()
 
         # PCA by LDA -> word2vec
-
         # TODO: might need to re-weigh the sentence based on their probabilities
         topic_sentence = []
         for topic in top_topics:
@@ -588,7 +503,8 @@ class ReverseResume():
 
         # fit a 2d PCA model to the vectors
         X = model[model.wv.vocab]
-        print(np.shape(X))
+        if self.verbose==True:
+            print(np.shape(X))
 
         # only look at the first two components
         pca = PCA(n_components=2)
@@ -609,4 +525,6 @@ class ReverseResume():
 
         plt.xlabel('PC1')
         plt.ylabel('PC2')
-        plt.show()
+        if self.visualize==True:
+            plt.show()
+            
