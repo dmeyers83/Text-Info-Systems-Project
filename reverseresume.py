@@ -35,6 +35,8 @@ import matplotlib.pyplot as plt
 import sys
 import datetime
 import pickle
+import warnings
+warnings.filterwarnings("ignore")
 
 class ReverseResume():
     def __init__(self):
@@ -48,12 +50,16 @@ class ReverseResume():
         self.alldocs=None
         self.lda=None
         self.pca=None
-        self.visualize=False
+        # self.visualize=False
+        self.num_topics=10
+        self.corpus =None
+        self.dictionary = None
+        self.id2word = None
         self.today=datetime.date.today()
 
 
-    def __del__(self):
-        cleanClose(self)
+    # def __del__(self):
+    #     self.cleanClose(self)
 
     def importPackages(self):
         try:
@@ -94,6 +100,8 @@ class ReverseResume():
             import sys
             import datetime
             import pickle
+            import warnings
+            
         except ImportError as e:
             print(e)
 
@@ -144,6 +152,37 @@ class ReverseResume():
         fhandle.close()
     
 
+    def get_lda_word_topic_probs(self):
+        # # initialize
+        # topic_v = np.zeros(num_topics)
+
+        if self.lda ==None:
+            raise('LDA attribute is None')
+        p_word_topic = []
+        word = []
+        topic_number_idx = []
+        # create dataframe containing prob_word_given_topic, words, and topic number from lda_model
+        for i in range(self.num_topics):
+
+            word_id, prob, = zip(*self.lda.get_topic_terms(i))
+            
+            for j in range(len(word_id)):
+                p_word_topic.append(prob[j])
+                word.append(self.id2word[word_id[j]])
+                topic_number_idx.append(i)
+                
+        dict = {'p_word_topic': p_word_topic,
+                'word': word,
+                'topic_number_idx': topic_number_idx,
+                }
+        df = pd.DataFrame(dict) 
+        # add the sum of the probabilities as a separate column
+        # note: there are duplicates for words that occur more than once
+        df['p_total'] = df.groupby(['word'])['p_word_topic'].transform('sum')
+
+        return df
+
+
 
     def scrape_search_result_page(self,dir_url,page_result,browser):
         if self.verbose==True:
@@ -162,7 +201,7 @@ class ReverseResume():
         "Searching for job postings."
         q = query #ideal job
         l = location #location of job
-        numPage = 20 #num pages to scrap links from
+        numPage = 3 #num pages to scrap links from
         allLinks = [] # list to capture
         start = 0 #pagnigation variable, page 1 = 0, page 2 = 10, page 3 = 30, etc
 
@@ -283,10 +322,10 @@ class ReverseResume():
         if self.verbose==True:
             print('Number of unique tokens: %d' % len(dictionary))
             print('Number of documents: %d' % len(corpus))
-
+        
         # ## Build LDA Model
         # Set training parameters.
-        num_topics = 20
+        num_topics = self.num_topics
         chunksize = 2000
         passes = 20
         iterations = 400
@@ -295,6 +334,11 @@ class ReverseResume():
         # Make a index to word dictionary.
         temp = dictionary[0]  # This is only to "load" the dictionary.
         id2word = dictionary.id2token
+
+        # store into object
+        self.corpus = corpus
+        self.dictionary = dictionary
+        self.id2word = id2word
 
         lda_model = LdaModel(
             corpus=corpus,
@@ -309,7 +353,7 @@ class ReverseResume():
         )
 
         num_top_words = 10
-        top_topics = lda_model.top_topics(corpus, topn=num_top_words) #, num_words=10)
+        top_topics = lda_model.top_topics(self.corpus, topn=num_top_words) #, num_words=10)
         # print(top_topics)
         # Average topic coherence is the sum of topic coherences of all topics, divided by the number of topics.
         avg_topic_coherence = sum([t[1] for t in top_topics]) / num_topics
@@ -318,107 +362,15 @@ class ReverseResume():
 
             for idx, topic in lda_model.print_topics(-1):
                 print('Topic: {} \nWords: {}'.format(idx, topic))
-
+        
+        # store into object
         self.lda=lda_model
-        # ## Visualize Topics
-        #visualize without sorting topics
-
-        # initialize
-        topic_v = np.zeros(num_topics)
-        p_word_topic = []
-        word = []
-        topic_number_idx = []
-
-        # create dataframe
-        for i in range(num_topics):
-
-            word_id, prob, = zip(*lda_model.get_topic_terms(i))
-            for j in range(len(word_id)):
-                p_word_topic.append(prob[j])
-                word.append(id2word[word_id[j]])
-                topic_number_idx.append(i)
-        dict = {'p_word_topic': p_word_topic,
-                'word': word,
-                'topic_number_idx': topic_number_idx,
-               }
-        df = pd.DataFrame(dict)
-        df['p_total'] = df.groupby(['word'])['p_word_topic'].transform('sum')
-        # print(df)
-        # sorted by top topics
 
 
-        for n in df.topic_number_idx.unique():
-            df_sparse = df[df['topic_number_idx']==n]
-            df.drop_duplicates(subset=['word', 'p_word_topic'])
-            df_sparse_total = df[df['topic_number_idx']==n]
-
-            plt.figure()
-            plt.title(r'$p(\theta_{'+str(n)+'})=$'+str('%0.3f'%(df_sparse.p_word_topic.sum())))
-            sns.set_color_codes("pastel")
-            sns.barplot(x='p_total',y='word',data=df_sparse_total,color='b',alpha = 1,label=r'$p(w)$')
-            sns.set_color_codes("pastel")
-            sns.barplot(x='p_word_topic',y='word',data=df_sparse,color='r',alpha =1,label=r'$p(w|\theta_{'+str(n)+'})$')
-
-            plt.legend(bbox_to_anchor=[1.25, 1.0])
-
-            plt.xlabel('likelihood')
-        if self.visualize==True:
-            plt.show()
-
-
-        # ### use coherence to sort dataframes (deprecated since the topic numbers get re-indexed)
-
-        def create_df_from_top_topics(top_topics):
-            ''' function that coverts lda_model.top_topics() data into pandas dataframe
-            '''
-            # initialize empty lists
-            p_word_topic = []
-            word = []
-            coherence = []
-            topic_number_idx = []
-
-            # loop through topics
-            for t, topic in enumerate(top_topics):
-
-                # obtain probability and word vectors
-                p_vec,w_vec = zip(*topic[0])
-                for p,w in zip(p_vec,w_vec):
-                    p_word_topic.append(p)
-                    word.append(w)
-                    coherence.append(topic[1])
-                    topic_number_idx.append(t)
-
-            # covert lists to dict
-            dict = {'p_word_topic': p_word_topic,
-                    'word': word,
-                    'coherence': coherence,
-                    'topic_number_idx': topic_number_idx,
-                   }
-
-            return pd.DataFrame(dict)
-
-
-
-        df = create_df_from_top_topics(top_topics)
-        # # sorted by top topics (coherence measure)
-        # for n in df.topic_number_idx.unique():
-        #     df_sparse = df[df['topic_number_idx']==n]
-
-        #     plt.title('topic '+str(n)+', coherence='+str('%4.3f'%df_sparse.coherence.mean()))
-        #     sns.barplot(x='p_word_topic',y='word',data=df_sparse,color='b',alpha = 0.6)
-        # #     print(df_sparse)
-        #     plt.xlabel('likelihood')
-        # #     plt.xlim([0, max(df.p_word_topic)])
-        # plt.show()
+        # TODO: convert PCA, t-SNE results below to class functions and return data. 
+        # Visualization will go directly into webpage
 
         # ### PCA
-        # https://www.machinelearningplus.com/nlp/topic-modeling-visualization-how-to-present-results-lda-models/
-
-        # plot topics based on principle components
-
-        # In[296]
-        # PCA by topic weight
-        # shape = num_docs * number_topics
         topic_weights = []
         if self.verbose==True:
             print(lda_model[corpus])
@@ -451,23 +403,23 @@ class ReverseResume():
         # Dominant topic number in each doc
         topic_num = np.argmax(X, axis=1)
 
-        plt.figure(figsize=(8,8))
+        # plt.figure(figsize=(8,8))
 
-        if self.verbose==True:
-            print('number of documents:',len(lda_model[corpus]))
-        labels=['topic_'+"%02d" %(x) for x in range(num_topics+1)]
+        # if self.verbose==True:
+        #     print('number of documents:',len(lda_model[corpus]))
+        # labels=['topic_'+"%02d" %(x) for x in range(num_topics+1)]
 
-        # df_topic_weight = pd.DataFrame({'x':result[:,0],'y':result[:,1]})
-        # sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, data =df_topic_weight)
+        # # df_topic_weight = pd.DataFrame({'x':result[:,0],'y':result[:,1]})
+        # # sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, data =df_topic_weight)
 
-        df_topic_weight = pd.DataFrame({'x':result[:,0],'y':result[:,1],'label':[labels[x] for x in topic_num]}).sort_values(by='label')
-        sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, hue=df_topic_weight.label, data =df_topic_weight)
+        # df_topic_weight = pd.DataFrame({'x':result[:,0],'y':result[:,1],'label':[labels[x] for x in topic_num]}).sort_values(by='label')
+        # sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, hue=df_topic_weight.label, data =df_topic_weight)
 
-        plt.xlabel('PC1')
-        plt.ylabel('PC2')
-        plt.legend( bbox_to_anchor=[1.2, 1.0])
-        if self.visualize==True:
-            plt.show()
+        # plt.xlabel('PC1')
+        # plt.ylabel('PC2')
+        # plt.legend( bbox_to_anchor=[1.2, 1.0])
+        # if self.visualize==True:
+        #     plt.show()
 
 
         # plot topics based on T-SNE
@@ -480,51 +432,51 @@ class ReverseResume():
         tsne_lda = tsne_model.fit_transform(X)
 
         # Plot the Topic Clusters
-        if self.verbose==True:
-            print('number of documents:',len(tsne_lda))
-        plt.figure(figsize=(8,8))
-        df_topic_weight = pd.DataFrame({'x':tsne_lda[:,0],'y':tsne_lda[:,1],'label':[labels[x] for x in topic_num]}).sort_values(by='label')
-        sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, hue=df_topic_weight.label, data =df_topic_weight)
-        plt.legend( bbox_to_anchor=[1.2, 1.0])
-        plt.xlabel('')
-        plt.ylabel('')
-        if self.visualize==True:
-            plt.show()
+        # if self.verbose==True:
+        #     print('number of documents:',len(tsne_lda))
+        # plt.figure(figsize=(8,8))
+        # df_topic_weight = pd.DataFrame({'x':tsne_lda[:,0],'y':tsne_lda[:,1],'label':[labels[x] for x in topic_num]}).sort_values(by='label')
+        # sns.scatterplot(x=df_topic_weight.x, y=df_topic_weight.y, hue=df_topic_weight.label, data =df_topic_weight)
+        # plt.legend( bbox_to_anchor=[1.2, 1.0])
+        # plt.xlabel('')
+        # plt.ylabel('')
+        # if self.visualize==True:
+        #     plt.show()
 
-        # PCA by LDA -> word2vec
-        # TODO: might need to re-weigh the sentence based on their probabilities
-        topic_sentence = []
-        for topic in top_topics:
-            p_vec,w_vec = zip(*topic[0])
-            topic_sentence.append(w_vec)
+        # # PCA by LDA -> word2vec
+        # # TODO: might need to re-weigh the sentence based on their probabilities
+        # topic_sentence = []
+        # for topic in top_topics:
+        #     p_vec,w_vec = zip(*topic[0])
+        #     topic_sentence.append(w_vec)
 
-        # train model by creating word2vec neural network
-        model = Word2Vec(topic_sentence, min_count=1)
+        # # train model by creating word2vec neural network
+        # model = Word2Vec(topic_sentence, min_count=1)
 
-        # fit a 2d PCA model to the vectors
-        X = model[model.wv.vocab]
-        if self.verbose==True:
-            print(np.shape(X))
+        # # fit a 2d PCA model to the vectors
+        # X = model[model.wv.vocab]
+        # if self.verbose==True:
+        #     print(np.shape(X))
 
-        # only look at the first two components
-        pca = PCA(n_components=2)
-        result = pca.fit_transform(X)
+        # # only look at the first two components
+        # pca = PCA(n_components=2)
+        # result = pca.fit_transform(X)
 
-        # create a scatter plot of the projection
-        plt.figure(figsize=(8,8))
+        # # create a scatter plot of the projection
+        # plt.figure(figsize=(8,8))
 
-        pca1 = result[:, 0]
-        pca2 = result[:, 1]
+        # pca1 = result[:, 0]
+        # pca2 = result[:, 1]
 
 
-        plt.scatter(pca1, pca2)
-        words = list(model.wv.vocab)
+        # plt.scatter(pca1, pca2)
+        # words = list(model.wv.vocab)
 
-        for i, word in enumerate(words):
-            plt.annotate(word, xy=(result[i, 0], result[i, 1]))
+        # for i, word in enumerate(words):
+        #     plt.annotate(word, xy=(result[i, 0], result[i, 1]))
 
-        plt.xlabel('PC1')
-        plt.ylabel('PC2')
-        if self.visualize==True:
-            plt.show()
+        # plt.xlabel('PC1')
+        # plt.ylabel('PC2')
+        # if self.visualize==True:
+        #     plt.show()
             
