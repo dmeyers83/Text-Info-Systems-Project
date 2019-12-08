@@ -21,6 +21,9 @@ def diplayresult(searchQuery):
   lda_model = resume.lda
   # print(resume.lda)
 
+  summary = resume.summary
+  print(summary)
+
   # get dataframe of lda probability results
   df = resume.get_lda_word_topic_probs()
 
@@ -45,7 +48,7 @@ def diplayresult(searchQuery):
 
 
 
-  return render_template('results.html', searchQuery=searchQuery, labels =labelsList, values=dataList, values_tot=dataList_tot,numTopics=numTopics )
+  return render_template('results.html', searchQuery=searchQuery, labels =labelsList, values=dataList, values_tot=dataList_tot,numTopics=numTopics, summary =summary )
 
 #run flask app
 if __name__ == '__main__':

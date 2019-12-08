@@ -39,9 +39,9 @@
           datasets: [{
             label: 'p(w|\u03B8)*p(\u03B8)',
             backgroundColor:
-              'rgba(255, 99, 132, 1.0)',
+              'rgba(255, 165, 0, 1.0)',
             borderColor:
-              'rgba(255, 99, 132, 1)',
+              'rgba(255, 165, 0, 1)',
             data: data[i],
 
           },
@@ -92,19 +92,28 @@
 <body>
   <div class="section no-pad-bot" id="index-banner">
     <div class="container">
-      <br><br>
 
       <h1 class="header center orange-text">
         <img src="{{url_for('static', filename='RR.png')}}" alt="logo">
-        <Br>
-        <h5 class="header col s12 light center ">Learn what skills and keywords hiring managers are looking for in NYC!
-        </h5>
-      </h1>
-      <div class="row center">
-        <br>
-        <br>
 
-        <h4>Topic results for the following search term: {{searchQuery}}</h4>
+      </h1>
+      
+        <div class="row center">
+    <div class="col s12">
+      <h5>Most Relevant and Common Sentences (using Text Rank) for {{searchQuery}} </h5><br>
+      <div class="card-panel blue left-align">
+        <span class="white-text">{{summary}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+
+      <div class="row center">
+
+
+
+        <h5>Topic results for the following search term: {{searchQuery}}</h5>
         <Br>
         <br>
 

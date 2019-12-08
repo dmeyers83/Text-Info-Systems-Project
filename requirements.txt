@@ -1,0 +1,10 @@
+flask
+nltk
+gensim
+selenium
+bs4
+sklearn
+pandas
+numpy
+seaborn
+matplotlib
