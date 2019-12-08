@@ -271,7 +271,7 @@ class ReverseResume():
 
         #Creating keywords
         keywords(all_documents).split('\n')
-        self.summary=summarize(all_documents, word_count  = 150)
+        self.summary=summarize(all_documents, word_count  = 150,split=True)
         self.keywords=mz_keywords(all_documents,scores=True,threshold=0.001)
         if self.verbose==True:
             print (self.summary)

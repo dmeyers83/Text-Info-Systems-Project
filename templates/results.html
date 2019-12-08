@@ -19,8 +19,41 @@
 
     $(document).ready(function () {
 
-      //code to render the charts
-      var chartClass = ['myChart1', 'myChart2', 'myChart3', 'myChart4', 'myChart5', 'myChart6', 'myChart7', 'myChart8', 'myChart9', 'myChart10'];
+
+
+      //code to render the bubble chart for PCA
+        var bubble_data = {{ pca_data| tojson }};
+        var options = {
+          type: 'bubble',
+          data: {
+            datasets: bubble_data
+          },
+           options: {
+             onClick: function (evt, activeElements) {
+               var bubble_num = activeElements[0]._datasetIndex;
+               $(".myChart0").css("background-color", "white");
+               $(".myChart1" ).css("background-color", "white");
+               $(".myChart2" ).css("background-color", "white");
+               $(".myChart3" ).css("background-color", "white");
+               $(".myChart4" ).css("background-color", "white");
+               $(".myChart5" ).css("background-color", "white");
+               $(".myChart6").css("background-color", "white");
+               $(".myChart7" ).css("background-color", "white");
+               $(".myChart8" ).css("background-color", "white");
+               $(".myChart9").css("background-color", "white");
+
+               $(".myChart" + bubble_num).css("background-color", "#E8E8E8");
+             }
+           }
+        };//options
+
+        var canvas = document.getElementById("bubble");
+        var ctx = canvas.getContext("2d");
+        var chart_bubble = new Chart(ctx, options);
+
+
+      //code to render the bar charts
+      var chartClass = ['myChart0','myChart1', 'myChart2', 'myChart3', 'myChart4', 'myChart5', 'myChart6', 'myChart7', 'myChart8', 'myChart9'];
       var labels = {{ labels| tojson
     }};
     var data = {{ values| tojson }};
@@ -97,18 +130,32 @@
         <img src="{{url_for('static', filename='RR.png')}}" alt="logo">
 
       </h1>
-      
+
         <div class="row center">
     <div class="col s12">
       <h5>Most Relevant and Common Sentences (using Text Rank) for {{searchQuery}} </h5><br>
       <div class="card-panel blue left-align">
-        <span class="white-text">{{summary}}
+        <span class="white-text">
+          <ul>
+            {% for item in summary %}
+             <li>{{ item |e }}</li>
+            {% endfor %}
+          </ul>
         </span>
       </div>
     </div>
   </div>
 
+  <div class="row center bubblechartsection">
+        <h5>Topic PCA Analysis of: {{searchQuery}}</h5>
+        <h7>Click to highlight the topic distribution</h7>
+        <Br>
+        <br>
 
+      <div class="col s12">
+       <canvas id="bubble" width="450" height="200">></canvas>
+      </div>
+  </div>
       <div class="row center">
 
 
@@ -117,16 +164,16 @@
         <Br>
         <br>
 
-        <div class="col s6"><canvas id="myChart1"></canvas></div>
-        <div class="col s6"><canvas id="myChart2"></canvas></div>
-        <div class="col s6"><canvas id="myChart3"></canvas></div>
-        <div class="col s6"><canvas id="myChart4"></canvas></div>
-        <div class="col s6"><canvas id="myChart5"></canvas></div>
-        <div class="col s6"><canvas id="myChart6"></canvas></div>
-        <div class="col s6"><canvas id="myChart7"></canvas></div>
-        <div class="col s6"><canvas id="myChart8"></canvas></div>
-        <div class="col s6"><canvas id="myChart9"></canvas></div>
-        <div class="col s6"><canvas id="myChart10"></canvas></div>
+        <div class="col s6 myChart0"><canvas id="myChart0"></canvas></div>
+        <div class="col s6 myChart1"><canvas id="myChart1"></canvas></div>
+        <div class="col s6 myChart2"><canvas id="myChart2"></canvas></div>
+        <div class="col s6 myChart3"><canvas id="myChart3"></canvas></div>
+        <div class="col s6 myChart4"><canvas id="myChart4"></canvas></div>
+        <div class="col s6 myChart5"><canvas id="myChart5"></canvas></div>
+        <div class="col s6 myChart6"><canvas id="myChart6"></canvas></div>
+        <div class="col s6 myChart7"><canvas id="myChart7"></canvas></div>
+        <div class="col s6 myChart8"><canvas id="myChart8"></canvas></div>
+        <div class="col s6 myChart9"><canvas id="myChart9"></canvas></div>
 
 
       </div>
@@ -135,6 +182,8 @@
 
     </div>
   </div>
+
+
 
 
   <div class="container">
@@ -149,36 +198,18 @@
     <div class="container">
       <div class="row">
         <div class="col l6 s12">
-          <h5 class="white-text">Company Bio</h5>
-          <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our
-            full time job. Any amount would help support and continue development on this project and is greatly
-            appreciated.</p>
+          <h5 class="white-text">410 Final Project</h5>
+          <p class="grey-text text-lighten-4">Reverse Resume uses the latest algorithms to show you the most relevant topics and sentences to help you update your resume for a given job search</p>
 
 
         </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Settings</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
-        <div class="col l3 s12">
-          <h5 class="white-text">Connect</h5>
-          <ul>
-            <li><a class="white-text" href="#!">Link 1</a></li>
-            <li><a class="white-text" href="#!">Link 2</a></li>
-            <li><a class="white-text" href="#!">Link 3</a></li>
-            <li><a class="white-text" href="#!">Link 4</a></li>
-          </ul>
-        </div>
+
+
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+        Made by Brian Yoo, James Robertson and Doug Meyers
       </div>
     </div>
   </footer>
