@@ -59,14 +59,20 @@ Search a job (e.g., python developer)
 
 And that's it! Keep in mind that the query will take some time (usually several minutes) to load.
 
-The results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
+## Results
+
+The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
 
 ![Summary Image](/static/summary.png)
 
-Reverse resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we provide provide a principle component analysis (PCA) of the topic coverage.
+Reverse resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another.
+
+
 
 ![PCA Image](/static/pca_bubble_chart.png)
 
-Finally, it will provide word distributions of relevant keywords for each topic.
+Finally, ReverseResume provide a chart of word distributions of relevant keywords for each topic.
+
+
 
 ![Topic Chart Image](/static/topic_charts.png)
