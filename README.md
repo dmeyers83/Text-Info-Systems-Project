@@ -65,7 +65,8 @@ And that's it! Keep in mind that the query will take some time (usually several 
 
 The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
 
-![](./static/summary.png | width=200)
+
+<img src="./static/summary.png" width=300 >
 
 <br/>
 
