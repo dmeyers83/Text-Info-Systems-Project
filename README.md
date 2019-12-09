@@ -27,9 +27,8 @@ Visualization packages
 - [pprint](https://docs.python.org/3/library/pprint.html)
 - [matplotlib](https://matplotlib.org/)
 
-Web Framework
+Web Framework packages
 - [flask](https://www.palletsprojects.com/p/flask/)
-
 
 
 ## Installation
@@ -59,19 +58,24 @@ Search a job (e.g., python developer)
 
 And that's it! Keep in mind that the query will take some time (usually several minutes) to load.
 
-## Results
+<br/>
+
+## Query Results
 
 The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
 
 ![Summary Image](/static/summary.png)
 
-Reverse resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another.
+<br/>
 
+Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another.
 
 
 ![PCA Image](/static/pca_bubble_chart.png)
 
-Finally, ReverseResume provide a chart of word distributions of relevant keywords for each topic.
+<br/>
+
+Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic.
 
 
 
