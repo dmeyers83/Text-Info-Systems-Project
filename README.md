@@ -65,7 +65,7 @@ And that's it! Keep in mind that the query will take some time (usually several 
 
 ## Query Results
 
-The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
+The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings. The relevance of sentences are based on the [TextRank algorithm](https://arxiv.org/abs/1602.03606).
 
 <p align="center">
 <img src="./static/summary.png" width="700">
@@ -73,7 +73,7 @@ The query results will return a 250 word limit summary of the most relevant sent
 
 <br/>
 
-Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another. The size of the bubbles in the chart is determined based on the number of job postings for a given topic.
+Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another. Each bubble in the chart represents a topic. The size of each bubble is determined based on the number of job postings for a given topic.
 
 <p align="center">
 <img src="./static/pca_bubble_chart.png" width="700">
