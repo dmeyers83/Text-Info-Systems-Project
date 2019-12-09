@@ -55,7 +55,7 @@ python main.py
 Search a job (e.g., python developer)
 
 <p align="center">
-<img src="./static/search_box.png" width="500">
+<img src="./static/search_box.png" width="700">
 </p>
 
 <br/>
@@ -68,7 +68,7 @@ And that's it! Keep in mind that the query will take some time (usually several 
 The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
 
 <p align="center">
-<img src="./static/summary.png" width="500">
+<img src="./static/summary.png" width="700">
 </p>
 
 <br/>
@@ -76,7 +76,7 @@ The query results will return a 250 word limit summary of the most relevant sent
 Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another.
 
 <p align="center">
-<img src="./static/pca_bubble_chart.png" width="500">
+<img src="./static/pca_bubble_chart.png" width="700">
 </p>
 
 
@@ -86,5 +86,5 @@ Finally, Reverse Resume provide a chart of word distributions of relevant keywor
 
 
 <p align="center">
-<img src="./static/topic_charts.png" width="500">
+<img src="./static/topic_charts.png" width="700">
 </p>
