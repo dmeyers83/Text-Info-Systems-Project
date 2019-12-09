@@ -1,6 +1,6 @@
 # Text-Info-Systems-Project
  
-Indeed webscraper that returns matching summary, keywords, and topics for a user-provided job search query.
+Indeed webscraper that returns matching summary and visualization of topic word distributions for a user-provided job search query.
 
 ## Team Members
 
@@ -15,21 +15,57 @@ Webscraping packages
 - [selenium](https://selenium-python.readthedocs.io/installation.html)
 - [chromedriver](https://chromedriver.chromium.org/)
 
-Text mining packages
+Data Wrangling packages
+- pandas
+
+Text mining/ML packages
+- [scikit-learn](https://scikit-learn.org/stable/) - packaged used for machine learning
 - [nltk](https://www.nltk.org/install.html) - package used for natural language processing and document processing
 - [gensim](https://radimrehurek.com/gensim/) - package used for topic modeling
 
 Visualization packages
 - [pprint](https://docs.python.org/3/library/pprint.html)
-- [pLDAvis](https://pyldavis.readthedocs.io/en/latest/readme.html#installation) - package that enables interactive plot visualization of LDA topic model
+- [matplotlib]
+
+Web Framework
+- [flask] - https://www.palletsprojects.com/p/flask/
 
 
 
 ## Installation
 
-To be continued..
+### Conda Installation
+```
+conda create --name reverseresume python==3.6
+conda install --file requirements.txt 
+```
+
+### pip Installation
+```
+pip install -r requirements.txt --no-index --find-links file:///tmp/packages
+```
 
 ## Usage
 
-To be continued..
+Run the app:
+```
+python main.py
+```
 
+Search a job (e.g., python developer)
+
+![Search Image](/static/search_box.png)
+
+And that's it! Keep in mind that the query will take some time (usually several minutes) to load.
+
+The results will return a 250 word limit summary of the most relevant sentences obtained from the job postings.
+
+![Summary Image](/static/summary.png)
+
+It will also provide a principle component analysis (PCA) of the topic coverage
+
+![PCA Image](/static/pca_bubble_chart.png)
+
+And finally, it will provide word distributions of relevant keywords for each topic
+
+![Topic Chart Image](/static/topic_charts.png)

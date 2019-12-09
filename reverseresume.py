@@ -5,8 +5,6 @@ from selenium.webdriver.chrome.options import Options
 import re
 import urllib
 import pickle
-import re
-import urllib
 import nltk
 import math
 from nltk.tokenize import RegexpTokenizer
@@ -29,9 +27,7 @@ from gensim.models import Word2Vec
 from sklearn.manifold import TSNE
 from sklearn.decomposition import PCA
 import pandas as pd
-import seaborn as sns
 import numpy as np
-import matplotlib.pyplot as plt
 import sys
 import datetime
 import pickle
@@ -97,9 +93,7 @@ class ReverseResume():
             from sklearn.manifold import TSNE
             from sklearn.decomposition import PCA
             import pandas as pd
-            import seaborn as sns
             import numpy as np
-            import matplotlib.pyplot as plt
             import sys
             import datetime
             import pickle
