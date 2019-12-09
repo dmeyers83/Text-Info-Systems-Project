@@ -73,7 +73,7 @@ The query results will return a 250 word limit summary of the most relevant sent
 
 <br/>
 
-Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another.
+Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform a principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another. The size of the bubbles in the chart is determined based on the number of job postings for a given topic.
 
 <p align="center">
 <img src="./static/pca_bubble_chart.png" width="700">
@@ -82,7 +82,8 @@ Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model.
 
 <br/>
 
-Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic.
+Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic. The probability for each word within
+a topic is compared with the probability of the word in the entire corpus.
 
 
 <p align="center">
