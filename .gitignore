@@ -1,0 +1,4 @@
+# ignore jobSearchResult files
+jobSearchResult*.txt
+*.bin
+pageText*.txt

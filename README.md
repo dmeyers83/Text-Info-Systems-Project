@@ -16,19 +16,19 @@ Webscraping packages
 - [chromedriver](https://chromedriver.chromium.org/)
 
 Data Wrangling packages
-- pandas
+- [pandas](https://pandas.pydata.org/)
 
 Text mining/ML packages
-- [scikit-learn](https://scikit-learn.org/stable/) - packaged used for machine learning
+- [scikit-learn](https://scikit-learn.org/stable/) - package used for machine learning
 - [nltk](https://www.nltk.org/install.html) - package used for natural language processing and document processing
 - [gensim](https://radimrehurek.com/gensim/) - package used for topic modeling
 
 Visualization packages
 - [pprint](https://docs.python.org/3/library/pprint.html)
-- [matplotlib]
+- [matplotlib](https://matplotlib.org/)
 
 Web Framework
-- [flask] - https://www.palletsprojects.com/p/flask/
+- [flask](https://www.palletsprojects.com/p/flask/)
 
 
 
@@ -38,6 +38,7 @@ Web Framework
 ```
 conda create --name reverseresume python==3.6
 conda install --file requirements.txt 
+source activate reverseresume
 ```
 
 ### pip Installation
