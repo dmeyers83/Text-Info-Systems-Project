@@ -71,7 +71,7 @@ def diplayresult(searchQuery):
   pca_r = list([int(x) for x in pca_r])
   
   # create PCA Object for rendering
-  PCA_Object = [{"label": labels[k]+'(number of docs: '+str(np.array(df_pca_grouped['count'])[k])+')',
+  PCA_Object = [{"label": labels[k]+' (number of docs: '+str(np.array(df_pca_grouped['count'])[k])+')',
                  "data": [{"x": pca_x[k],
                            "y": pca_y[k],
                            "r": pca_r[k]
