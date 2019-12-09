@@ -63,10 +63,10 @@ The results will return a 250 word limit summary of the most relevant sentences 
 
 ![Summary Image](/static/summary.png)
 
-It will also provide a principle component analysis (PCA) of the topic coverage
+Reverse resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we provide provide a principle component analysis (PCA) of the topic coverage.
 
 ![PCA Image](/static/pca_bubble_chart.png)
 
-And finally, it will provide word distributions of relevant keywords for each topic
+Finally, it will provide word distributions of relevant keywords for each topic.
 
 ![Topic Chart Image](/static/topic_charts.png)
