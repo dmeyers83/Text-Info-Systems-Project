@@ -2,8 +2,8 @@ flask
 nltk
 gensim
 selenium
-bs4
-sklearn
+beautifulsoup4
+scikit-learn
 pandas
 numpy
 seaborn
