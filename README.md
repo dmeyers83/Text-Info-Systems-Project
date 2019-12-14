@@ -50,7 +50,7 @@ pip install -r requirements.txt --no-index --find-links file:///tmp/packages
 ```
 Open up your python console
 Type 'import nltk' and 'nltk.download('wordnet')'
-Close the python termimal
+Close the python console
 ```
 
 
@@ -60,7 +60,7 @@ Run the app:
 ```
 python main.py
 Access the page on this URL: http://127.0.0.1:5000/
-** If you get a selimun web driver or chrome error you may need to upgrade your chrome driver using this link:
+** If you get a selenium web driver or chrome error after your first search you may need to upgrade your chrome driver using this link:
 https://chromedriver.chromium.org/downloads
 
 ```
