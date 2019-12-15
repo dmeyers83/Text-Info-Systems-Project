@@ -46,7 +46,7 @@ conda install --file requirements.txt
 source activate reverseresume
 ```
 
-### pip Installation
+### Pip Installation
 ```
 pip install -r requirements.txt --no-index --find-links file:///tmp/packages
 ```
