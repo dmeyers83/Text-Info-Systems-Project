@@ -59,7 +59,9 @@ Type 'import nltk' and 'nltk.download('wordnet')'
 Close the python console
 ```
 
-## Software Implemented  
+## Software Implementation   
+
+<img src="./static/RRDirectory.PNG">
 
 - 
 - 
