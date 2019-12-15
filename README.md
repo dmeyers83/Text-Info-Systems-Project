@@ -96,7 +96,7 @@ And that's it! Keep in mind that the query will take some time (usually several 
 
 ## Query Results
 
-The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings. Gensim's TextRank summary is created by first placing all sentences from the corpus into a graph data structure, where each sentence represents a node on the graph. The edges of nodes are then generated using a similarity function, such as those used in text retrieval processes (for instance, BM25, BM25+ and cosine similarity). Once this graph structure is created, Google’s PageRank algorithm is used to score each sentence. The sentences that have the highest score are the ones that show up on the summary. More detail on the algorithm can be found [here](https://arxiv.org/abs/1602.03606) . 
+The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings. Gensim's TextRank summary is created by first placing all sentences from the corpus into a graph data structure, where each sentence represents a node on the graph. The edges of nodes are then generated using a similarity function, such as those used in text retrieval processes (for instance, BM25, BM25+ and cosine similarity). Once this graph structure is created, Google’s PageRank algorithm is used to score each sentence. The sentences that have the highest score are the ones that show up on the summary. More detail on the algorithm can be found [here](https://arxiv.org/abs/1602.03606). 
 
 <p align="center">
 <img src="./static/summary.png" width="700">
