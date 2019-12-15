@@ -59,15 +59,23 @@ Type 'import nltk' and 'nltk.download('wordnet')'
 Close the python console
 ```
 
+## Software Implemented  
+
+- 
+- 
+-
+
 
 ## Usage
 
 Run the app:
 ```
 python main.py
-Access the page on this URL: http://127.0.0.1:5000/
+Access the page via URL: http://127.0.0.1:5000/
+
 ** If you get a selenium web driver or chrome error after your first search you may need to upgrade your chrome driver using this link:
 https://chromedriver.chromium.org/downloads
+The chrome drivers are in the browser directory
 
 ```
 
