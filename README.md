@@ -96,7 +96,7 @@ And that's it! Keep in mind that the query will take some time (usually several 
 
 ## Query Results
 
-The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings. The relevance of sentences are based on the [TextRank algorithm](https://arxiv.org/abs/1602.03606).
+The query results will return a 250 word limit summary of the most relevant sentences obtained from the job postings. Gensim's TextRank summary is created by first placing all sentences from the corpus into a graph data structure, where each sentence represents a node on the graph. The edges of nodes are then generated using a similarity function, such as those used in text retrieval processes (for instance, BM25, BM25+ and cosine similarity). Once this graph structure is created, Google’s PageRank algorithm is used to score each sentence. The sentences that have the highest score are the ones that show up on the summary. More detail on the algorithm can be found [here](https://arxiv.org/abs/1602.03606) . 
 
 <p align="center">
 <img src="./static/summary.png" width="700">
@@ -104,7 +104,7 @@ The query results will return a 250 word limit summary of the most relevant sent
 
 <br/>
 
-Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model. As such, we perform principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another. Each bubble in the chart represents a topic. The size of each bubble is determined based on the number of job postings for a given topic.
+  Reverse Resume uses gensim's Latent Dirichlet Allocation (LDA) to determine the most likely topic a document is categorized as. LDA is a generative model and the Bayesian form of the Probabilistic Latent Semantic Analysis model, which can be used to categorize documents based on their topics, where each topic is defined as a distribution of words. Keep in mind that documents can be associated with multiple topics, although for the following chart, we only label each document based on their most probable topic. Here we perform principle component analysis (PCA) of the topic coverage to provide some idea as to how each topic varies from one another. Each bubble in the chart represents a topic. The size of each bubble is determined based on the number of job postings for a given topic.
 
 <p align="center">
 <img src="./static/pca_bubble_chart.png" width="700">
@@ -113,8 +113,7 @@ Reverse Resume uses Latent Dirichlet Allocation (LDA) to create its topic model.
 
 <br/>
 
-Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic. The probability for each word within
-a topic is compared with the probability of the word in the entire corpus.
+Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic. Here we show the product of the conditional probability of words given the topic (p(w|theta)) with the probability of the topic (p(theta)), and compare them to the probability of the word (p(w)) for the entire corpus. The point of these charts it to show which words tend to be most relevant for each topic.
 
 
 <p align="center">
