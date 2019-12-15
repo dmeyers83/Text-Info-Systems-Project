@@ -10,8 +10,10 @@ Users simply enter in the job position they are interested in pursuing (‘Pytho
 ## Team Members and Contributions
 
 - Doug Meyers: Modified the class HW webscraping code for Indeed.com, coded procedure for data cleaning, adopted test code for LDA and Text Rank from Gensim package, Flask integration with Chart JS, and contributed to documenation and video.
-- James Robertson:
-- Brian Yoo:
+- James Robertson: Migrated codebase from Jupyter notebook into Class object and API, contributed to documentation, created video and made all final cuts
+- Brian Yoo: Performed EDA for LDA model, created PCA/probability diagrams and data pipelines for Chart JS figures, contributed to documentation and video
+
+Note: All group members contributed 20+ hours to the project.
 
 ## Dependencies
 
