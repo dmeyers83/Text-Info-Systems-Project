@@ -34,7 +34,8 @@ Visualization packages
 
 Web Framework packages
 - [flask](https://www.palletsprojects.com/p/flask/)
-
+- [materlize css](https://materializecss.com/)
+- [jquery](https://jquery.com/)
 
 ## Installation
 
