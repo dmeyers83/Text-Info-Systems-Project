@@ -117,7 +117,7 @@ In the figure shown below, Principle component analysis (PCA) is performed on th
 
 <br/>
 
-Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic. Here we show the product of the conditional probability of words given the topic (latexImg('p(w|\theta)')) with the probability of the topic (p(\theta)), and compare them to the probability of the word (p(w)) for the entire corpus. The point of these charts it to show which words tend to be most relevant for each topic.
+Finally, Reverse Resume provide a chart of word distributions of relevant keywords for each topic. Here we show the product of the conditional probability of words given the topic (p(w|&theta)) with the probability of the topic (p(&theta)), and compare them to the probability of the word (p(w)) for the entire corpus. The point of these charts it to show which words tend to be most relevant for each topic.
 
 
 <p align="center">
