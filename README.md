@@ -53,33 +53,33 @@ pip install -r requirements.txt --no-index --find-links file:///tmp/packages
 
 
 ### Download Wordnet Lexical Database
-```
 Open up your python console
-Type 'import nltk' and 'nltk.download('wordnet')'
-Close the python console
+```
+import nltk
+nltk.download('wordnet')
 ```
 
 ## Software Implementation   
 
 <img src="./static/RRDirectory.PNG">
 
-- 
-- 
--
-
-
+- main.py: This is the main python application that runs the flask website and calls the reverseresume class which contains the majority of the business logic.  PCA was also implemented in this file.
+- reverseresume.py:  This python file class contains the code used to scrape Indeed.com and implementes the various gensim text models to run text rank and LDA.
+- templates dir:  This directory contains the html and javascript files used to render to search landing page and the results.
+- browser dir:  This directory contains chrome drivers for linux, windows and mac operating systems.
+- static dir:  This directory contains static html and image files.
 ## Usage
 
 Run the app:
 ```
 python main.py
+```
 Access the page via URL: http://127.0.0.1:5000/
 
 ** If you get a selenium web driver or chrome error after your first search you may need to upgrade your chrome driver using this link:
 https://chromedriver.chromium.org/downloads
 The chrome drivers are in the browser directory
 
-```
 
 Search a job (e.g., python developer)
 
