@@ -6,5 +6,4 @@ beautifulsoup4
 scikit-learn
 pandas
 numpy
-seaborn
 matplotlib
