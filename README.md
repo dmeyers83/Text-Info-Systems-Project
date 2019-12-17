@@ -123,3 +123,6 @@ Finally, Reverse Resume provide a chart of word distributions of relevant keywor
 <p align="center">
 <img src="./static/topic_charts.png" width="700">
 </p>
+
+
+## API USAGE
