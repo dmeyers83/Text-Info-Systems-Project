@@ -6,6 +6,8 @@ Reverse Resume helps users learn what are the most relevant skillsets and keywor
 
 Users simply enter in the job position they are interested in pursuing (‘Python Developer”), click search and Reverse Resume will scrape 100+ job descriptions from Indeed.com and run various text analysis models to return a summary and visualization of the most relevant sentences, key topics and analytics on how related the topics are.  
 
+## Video Presentation
+https://drive.google.com/file/d/1fO0sOqV-0zXG2AJn5dsDwtfeXfZuCaSc/view
 
 ## Team Members and Contributions
 
