@@ -133,14 +133,35 @@ We wanted to mark our python API as simple as possible.
 >>> import reverseresume as rr
 >>> resume=rr.ReverseResume()
 Reverse Resume Beta
->>> dir(resume) #exposes the implemented methods and functions
-['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'alldocs', 'browser', 'cache', 'cleanClose', 'corpus', 'dictionary', 'getBrowser', 'get_js_soup', 'get_lda_word_topic_probs', 'id2word', 'importPackages', 'keywords', 'lda', 'lda_topic_coverage', 'num_topics', 'pca', 'platform', 'process_bio', 'remove_script', 'run', 'scrape_search_result_page', 'summary', 'today', 'tsne', 'verbose', 'write_lst']
-
+>>> for i in dir(resume):
+...     if "_" in i:
+...             pass
+...     else:
+...             print(i) #printing available methods and functions.
+... 
+alldocs #all documents found in web scrape
+browser #web crawler
+cache 
+cleanClose #close crawler
+corpus #rr corupus
+dictionary #genism dictionary
+getBrowser #loads OS specific browser
+id2word #dictionary of worsd
+importPackages #package preloader
+keywords #search keywords
+lda #Latent Dirichlet allocation
+pca 
+platform #your os platform
+run #run reverse resume
+summary #summary of documents
+today #todays date for cachine
+tsne
+verbose #flag to set verbose output. True = output all comments; False = Silent run.
 
 >>> resume.run('Machine Learning', 'San Francisco, CA')
-Scraping 55 job links.ound 19 indeed search urls -----------------------------
+Scraping 55 job links.ound 19 indeed search urls 
 Accessing link 12 of 55  
-**-> Scrape Complete.55        
+**-> Scrape Complete.     
 Summarizing Findings.
 Number of unique tokens: 95
 Number of documents: 55
