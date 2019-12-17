@@ -127,7 +127,7 @@ Finally, Reverse Resume provide a chart of word distributions of relevant keywor
 
 ## API USAGE
 
-Using Reverse Resume is very simple! Our goal was to make it easy even for non technical folks.
+Using Reverse Resume is very simple! Our goal was to make it accessable for non technical folks.
 The simplest use of our api is as follows:
 
 ```python
@@ -136,9 +136,11 @@ The simplest use of our api is as follows:
 >>> resume.run()
 ```
 Our .run() function can be used in the following manners.
+```python
 resume.run() #generic search with Indeed.com defaults
 resume.run('medical doctor') #location defaults to NY
 resume.run('professor', 'San Diego, CA') #with job and location identified.
+```
 
 The following functions and methods have been implemented:
 ```
