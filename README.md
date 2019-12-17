@@ -126,3 +126,28 @@ Finally, Reverse Resume provide a chart of word distributions of relevant keywor
 
 
 ## API USAGE
+
+We wanted to mark our python API as simple as possible.
+
+```python
+>>> import reverseresume as rr
+>>> resume=rr.ReverseResume()
+Reverse Resume Beta
+>>> dir(resume) #exposes the implemented methods and functions
+['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', 'alldocs', 'browser', 'cache', 'cleanClose', 'corpus', 'dictionary', 'getBrowser', 'get_js_soup', 'get_lda_word_topic_probs', 'id2word', 'importPackages', 'keywords', 'lda', 'lda_topic_coverage', 'num_topics', 'pca', 'platform', 'process_bio', 'remove_script', 'run', 'scrape_search_result_page', 'summary', 'today', 'tsne', 'verbose', 'write_lst']
+
+
+>>> resume.run('Machine Learning', 'San Francisco, CA')
+Scraping 55 job links.ound 19 indeed search urls -----------------------------
+Accessing link 12 of 55  
+**-> Scrape Complete.55        
+Summarizing Findings.
+Number of unique tokens: 95
+Number of documents: 55
+>>> resume.summary
+['Job Type: Full-time Salary: $125,000.00 $190,000.00 /year Additional Compensation: Other forms Work Location: One location Fully Remote Benefits: Health insurance Dental insurance Vision insurance Retirement plan Paid time Flexible schedule Parental leave Relocation assistance Professional development assistance Visa Sponsorship Potentially Available: Yes: H-1B work authorization Yes: Other non-immigrant work authorization (e.g. L-1, TN, E-3, O-1, etc.) This Job Is Ideal Someone Who Is: Detail-oriented -- focus details work bigger picture Achievement-oriented -- enjoys taking challenges, fail Innovative -- prefers working unconventional ways tasks require creativity This Company Describes Its Culture as: Innovative -- innovative risk-taking People-oriented -- supportive fairness-focused Team-oriented -- cooperative collaborative This Job Is: A job military experienced candidates encouraged apply Open applicants 18 years old, provided legally allowed job location Open applicants high school diploma/GED A Fair Chance job (you employer follow Fair Chance hiring practices performing background checks - learn https://start.indeed.com/fair-chance) A good fit applicants gaps resume, workforce past 6 months A good job entering workforce returning workforce limited experience education A job ages, including older job seekers, encouraged apply Open applicants college diploma A job people disabilities encouraged apply - 30+ days ago -Machine Learning/AI Researcher SCOTTY San Francisco, CA Our machine learning specialists design develop cutting edge algorithms enable vehicles adapt improve gather increasing amounts data.']
+
+>>> resume.keywords
+[('customer', 0.004588123746779739), ('unity', 0.004400491868799696), ('glassdoor', 0.0039294060401766015), ('twitter', 0.0031667825440864403), ('gsk', 0.0026901086699553972), ('insurance', 0.0025779367352851616), ('go', 0.002430043335379156), ('learning', 0.00236669154869136), ('trueaccord', 0.00233555294865534), ('job', 0.002104016677961451), ('company', 0.0020018867494534204), ('customers', 0.0019845589796946292), ('oriented', 0.001910258392465156), ('ml', 0.0019020157638575642), ('solution', 0.0019013688828864706), ('cruise', 0.0018620865024422959), ('talent', 0.0018513649381653877), ('strategic', 0.0017798724237761284), ('technical', 0.0017432869599994405), ('business', 0.0017194149335578888), ('edmodo', 0.0016438413145265828), ('you', 0.001604538176532733), ('machine', 0.0016000523112135129), ('process', 0.0015805962384064023), ('companies', 0.0015792855625811606), ('content', 0.0015153900912681546), ('we', 0.0014937257460633142), ('sonoma', 0.0014613393285227542), ('williams', 0.0014613393285227542), ('software', 0.0014609646490436562), ('development', 0.0014316742156920716), ('data', 0.0014311188138316304), ('search', 0.0013701936271412415), ('triplebyte', 0.001347999855638639), ('d', 0.0013458817348741784), ('product', 0.0013255605443591254), ('map', 0.0013015365960398165), ('users', 0.0012932203932961444), ('splunk', 0.001278946992433675), ('playstation', 0.0012669664865724286), ('aurora', 0.0012658049786871178), ('systems', 0.0012512645139294521), ('products', 0.0012360953270937822), ('self', 0.0012309241920592233), ('experience', 0.001230055286482236), ('internship', 0.0012263483482588616), ('members', 0.0011997286596267182), ('research', 0.0011587629950814595), ('nlp', 0.0011431507355680532), ('models', 0.0011365253060385632), ('problems', 0.0011321319975206787), ('solutions', 0.0011308809686198205), ('cortex', 0.0011168997430575985), ('our', 0.0011083076310878497), ('strategy', 0.001088305272377367), ('management', 0.0010786371256506688), ('cell', 0.0010743755000729323), ('drug', 0.0010743755000729323), ('great', 0.0010660681679374004), ('user', 0.0010651797842945899), ('us', 0.0010502674141500924), ('food', 0.001041180647553374), ('algorithms', 0.0010380958982165235), ('deep', 0.00103699181059798), ('training', 0.0010368518376674728), ('images', 0.0010177130737459537), ('hiring', 0.0010013554056627003), ('driving', 0.0010013554056626998)]
+
+```
