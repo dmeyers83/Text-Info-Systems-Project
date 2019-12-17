@@ -141,6 +141,7 @@ resume.run('medical doctor') #location defaults to NY
 resume.run('professor', 'San Diego, CA') #with job and location identified.
 
 The following functions and methods have been implemented:
+```
 alldocs #all documents found in web scrape
 browser #web crawler
 cleanClose #close crawler
@@ -157,6 +158,7 @@ run #run reverse resume
 summary #summary of documents
 today #todays date for cachine
 verbose #flag to set verbose output. True = output all comments; False = Silent run.
+```
 
 A more detailed example of running out package demonstrated below.
 ```python
