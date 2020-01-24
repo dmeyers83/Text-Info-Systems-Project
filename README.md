@@ -38,7 +38,7 @@ Visualization packages
 
 Web Framework packages
 - [flask](https://www.palletsprojects.com/p/flask/)
-- [materlize css](https://materializecss.com/)
+- [materialize css](https://materializecss.com/)
 - [jquery](https://jquery.com/)
 
 ## Installation
@@ -127,7 +127,7 @@ Finally, Reverse Resume provide a chart of word distributions of relevant keywor
 </p>
 
 
-## API USAGE
+## API Usage
 
 Using Reverse Resume is very simple! Our goal was to make it accessable for non technical folks.
 The simplest use of our api is as follows:
